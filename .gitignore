@@ -1,0 +1,56 @@
+# LaTeX temporary files
+*.aux
+*.log
+*.toc
+*.lof
+*.lot
+*.out
+*.fls
+*.fdb_latexmk
+*.synctex.gz
+*.dvi
+*.bbl
+*.bcf
+*.blg
+*.run.xml
+*.nav
+*.snm
+*.vrb
+*.idx
+*.ilg
+*.ind
+
+# BibTeX
+*.bib.bak
+*.bib.sav
+
+# Editor files
+*~
+*.bak
+*.swp
+.DS_Store
+
+# Output files
+# *.pdf
+*.ps
+*.epub
+
+# Build directories
+_build/
+build/
+output/
+
+# Python notebooks for data analysis
+.ipynb_checkpoints/
+
+# Machine learning specific
+*.pt
+*.pth
+*.h5
+*.ckpt
+*.pkl
+*.npz
+data/
+models/
+logs/
+runs/W
