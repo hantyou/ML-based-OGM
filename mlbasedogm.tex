@@ -1,0 +1,191 @@
+\documentclass[onecolumn]{IEEEtran}
+\IEEEoverridecommandlockouts
+% The preceding line is only needed to identify funding in the first footnote. If that is unneeded, please comment it out.
+\usepackage[noadjust]{cite}
+\renewcommand\citepunct{, }
+%\usepackage[caption=false]{subfig}
+\usepackage{subcaption}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage[ruled,vlined,linesnumbered]{algorithm2e}
+% \usepackage{algorithm2e}
+\usepackage{bm}
+\usepackage{graphicx}
+\usepackage{enumitem}
+\usepackage{makecell}
+\usepackage{booktabs}
+\usepackage{adjustbox}
+\usepackage{textcomp}
+\usepackage{color,soul}
+\usepackage{multirow}
+\usepackage{multicol}
+\usepackage{comment}
+\usepackage{balance}
+\usepackage{tabularx}
+\usepackage[yyyymmdd,hhmmss]{datetime}
+\usepackage{array}
+\usepackage{geometry}
+\usepackage{textcase}
+\usepackage[tablename=TABLE]{caption}
+% \usepackage[colorlinks=true, allcolors=blue]{hyperref}
+\usepackage{setspace} % Add to preamble
+\usepackage{hyperref}
+\def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
+		T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
+\usepackage[usenames,dvipsnames]{xcolor}
+\usepackage[framemethod=TikZ]{mdframed}
+\mdfdefinestyle{default}{%
+	linewidth=1pt,
+	backgroundcolor=gray!10,
+	innertopmargin=10pt,
+	innerbottommargin=10pt,
+	innerrightmargin=10pt,
+	innerleftmargin=10pt,
+	roundcorner=4pt
+}
+\mdfsetup{style=default}
+% Setup for compact itemize in tables only
+\makeatletter
+\newenvironment{tableitemize}{%
+\begin{spacing}{0.9}
+	\begin{itemize}[
+    leftmargin=*,
+    topsep=0pt,
+    partopsep=0pt,
+    parsep=0pt,
+	font=\small
+  ]}{%
+  \end{itemize}\end{spacing}}
+\makeatother
+% }{\end{itemize}}
+% \makeatother
+\usepackage{listings}
+\lstset{
+	%backgroundcolor=\color{backcolour},   
+	commentstyle=\color{codegreen},
+	keywordstyle=\color{blue},
+	numberstyle=\tiny\color{codegray},
+	stringstyle=\color{codepurple},
+	basicstyle=\footnotesize,
+	escapeinside=``,
+	breaklines,
+	columns=fullflexible,
+	identifierstyle={},
+	stringstyle=\ttfamily,
+	extendedchars=false,
+	linewidth=1\textwidth,
+	numbers=left,
+	numbersep=2 em, 
+	tabsize=4,
+	frame=leftline,
+	showstringspaces=false
+}
+\usepackage{tikz}
+\usepackage{tikz-qtree}
+\usetikzlibrary{trees}
+\IEEEoverridecommandlockouts
+
+\SetKwInput{KwData}{Input}
+\SetKwInput{KwResult}{Output}
+\SetKwInOut{Init}{Init}
+\newlength\mylena
+\newcommand\myinput[1]{%
+	\settowidth\mylena{\KwData{}}%
+	\setlength\hangindent{\mylena}%
+	\hspace*{\mylena}#1\\}
+\newlength\mylenb
+\newcommand\myoutput[1]{%
+	\settowidth\mylenb{\KwResult{}}%
+	\setlength\hangindent{\mylenb}%
+	\hspace*{\mylenb}#1\\}
+\newlength\mylenc
+\newcommand\myinit[1]{%
+	\settowidth\mylenc{\Init{}}%
+	\setlength\hangindent{\mylenc}%
+	\hspace*{\mylenc}#1\\}
+\newtheorem{theorem}{Theorem}
+\begin{document}
+	\title{Machine learning-based occupancy grid mapping}
+	\author{
+		\IEEEauthorblockN{Peiyuan Zhai}
+		%\IEEEauthorblockA{5276179}
+	}
+	\maketitle
+	\begin{abstract}
+		In this note, there are contents and comments on ML-based occupancy grid mapping algorithms. 
+		This is the public version of a private copy of the note. It might be updated in the future. 
+	\end{abstract}
+	% \section{Link to other related notes}
+	% \begin{itemize}
+	% 	\item \href{https://github.com/hantyou/-Journal-Ver.-Radar-and-lidar-fusion-for-OGM.git}{SBL-OGM sensor fusion journal paper github repo} and \href{https://www.overleaf.com/project/66b4c5fb0ef5b0698669e45a}{overleaf link}
+	% \end{itemize}
+	\section{Table of works}
+	\clearpage
+
+\newgeometry{left=0.25in, right=0.25in, top=0.25in, bottom=0.25in}
+\begin{table*}[htbp]
+\centering
+\caption{Table of Deep Learning-based OGM methods}
+\label{tab:dl-ogm}
+\begin{adjustbox}{max width=\textwidth}
+\newcolumntype{P}[1]{>{\raggedright\arraybackslash}p{#1}}
+\newcolumntype{M}[1]{>{\raggedright\arraybackslash}m{#1}}
+\newcolumntype{C}[1]{>{\centering\arraybackslash}m{#1}}
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+% Define column widths using array package
+\begin{tabularx}{\textwidth}{
+C{0.065\textwidth} % Type
+C{0.13\textwidth} % Name
+C{0.04\textwidth} % Year
+C{0.03\textwidth} % Code
+C{0.07\textwidth} % Structure
+C{0.055\textwidth} % Input
+C{0.05\textwidth} % Output
+C{0.14\textwidth} % Comments
+P{0.13\textwidth} % Pro
+P{0.13\textwidth} % Con
+}
+\toprule
+Type & Name & Year & Code & Structure & Input & Output & Comments & Pro & Con \\
+\midrule
+\multirow{16}{=}{{Single modal}}
+& RadarOcc~\cite{ding_radarocc_2024} & 2024 & {\color{green}\href{https://github.com/Toytiny/RadarOcc}{\checkmark}} & transformer & 4D radar & 3D SSC & 
+& \multirow{4}{=}{\begin{tableitemize}
+\item DL structure help 4D radar feature learning (i.e., doppler)
+\item second point
+\end{tableitemize}} & \multirow{4}{=}{ }\\
+& Occ3D~\cite{tian_occ3d_2023} & 2023 & {\color{green}\href{https://github.com/Tsinghua-MARS-Lab/Occ3D}{\checkmark}} & transformer & RGB & 3D SSC & & & \\
+& VoxelNet~\cite{zhou_voxelnet_2017} & 2017 & {\color{green}\href{https://github.com/skyhehe123/VoxelNet-pytorch}{\checkmark}} & CNN & LiDAR & 3D box & & & \\
+& SurroundOcc~\cite{wei_surroundocc_2023} & 2023 & {\color{green}\href{https://github.com/weiyithu/SurroundOcc}{\checkmark}} & transformer & RGB & 3D SSC & & & \\
+& DeepISM~\cite{weston_probably_2019}& 2019 & {\color{red}\texttimes} & VAE & radar & 2D OGM & Evidence available& & \\
+&Evidential DeepISM~\cite{bauer_deep_2019} & 2019 & {\color{red}\texttimes} & VAE & radar & 2D (E)OGM & Evidence available& & \\
+&\hl{PointPillars}~\cite{lang_pointpillars_2019}& 2019 & {\color{green}\href{https://github.com/nutonomy/second.pytorch}{\checkmark}} & CNN & LiDAR & 3D box & & & \\
+&OccupancyNet~\cite{sless_road_2019} & 2019 & {\color{red}\texttimes} & CNN & radar BEV & 2D OGM & & & \\
+&\makecell{SemanticPON~\cite{roddick_predicting_2020}}& 2020 & \makecell{{\color{green}\href{https://github.com/tom-roddick/mono-semantic-maps}{\checkmark}}} & STPN & \makecell{RGB} & 2D SSC & & & \\ 
+&\makecell{MotionNet~\cite{wu_motionnet_2020}}& 2020 & \makecell{{\color{green}\href{https://github.com/pxiangwu/MotionNet}{\checkmark}}} & STPN & \makecell{LiDAR} & 2D OGM & & & \\
+&EviLOG~\cite{van_kempen_simulation_based_2021}& 2021 & {\color{green}\href{https://github.com/ika-rwth-aachen/EviLOG}{\checkmark}} & CNN & radar & 2D EOGM & & & \\
+&\hl{RPFA-Net}~\cite{xu_rpfa_net_2021}& 2021 & {\color{red}\texttimes} & CNN & radar & 2D OGM & & & \\
+\cline{1-2}
+\multirow{4}{=}{Single sensor augmented}
+& & & {\color{red}\texttimes} & & & & & & \\
+& & & {\color{red}\texttimes} & & & & & & \\
+& & & {\color{red}\texttimes} & & & & & & \\
+& & & {\color{red}\texttimes} & & & & & & \\
+\cline{1-2}
+\multirow{4}{=}{Multi-sensors}
+& \makecell{MVDNet~\cite{qian_mvdnet_2021}\\ST-MVDNet~\cite{li_st_mvdnet_2022}\\ST-MVDNet++~\cite{li_st_mvdnetpp_2023}} & \makecell{2021\\2022\\2023} & \makecell{{\color{green}\href{https://github.com/qiank10/MVDNet}{\checkmark}}\\{\color{red}{\texttimes}}\\{\color{red}{\texttimes}}} & CNN & radar LiDAR & 2D box & & \multirow{4}{=}{\begin{tableitemize}\item Multi-sensor fusion\item s\end{tableitemize}} & \multirow{4}{=}{\begin{tableitemize}\item High computational cost\item Complex architecture\end{tableitemize}}\\
+& MV3D~\cite{chen_multi_view_2017} & 2017 & {\color{green}\href{https://github.com/bshao001/MV3D}{\checkmark}} & CNN & LiDAR camera & 3D box & & & \\
+& DTW~\cite{dequaire_deep_2018} & 2018 & {\color{red}\texttimes} & CNN+RNN & LiDAR & 2D OGM+box & & & \\
+& AVOD~\cite{ku_joint_2018} & 2018 & {\color{green}\href{https://github.com/kujason/avod}{\checkmark}} & CNN & LiDAR camera & 3D box & & & \\
+& FISHING~\cite{hendy_fishing_2020} & 2020 & {\color{red}{\texttimes}} & CNN & radar LiDAR camera & 3D box & Limited semantic, some obstacles are not detected & & \\
+&RadarNet~\cite{yang_radarnet_2020} & 2020 & {\color{red}\texttimes} & CNN & radar LiDAR & 3D box & & & \\
+\midrule
+\multicolumn{10}{l}{\textbf{Note:} SSC: Semantic Scene Completion, OGM: Occupancy Grid Map, EOGM: Evidential OGM}\\
+\bottomrule
+\end{tabularx}
+\end{adjustbox}
+\vspace{5pt}
+\end{table*}
+\clearpage 
+\bibliographystyle{ieeetr}
+\bibliography{main}
+\end{document}
